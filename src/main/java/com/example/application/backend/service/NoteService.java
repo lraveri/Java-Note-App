@@ -6,6 +6,7 @@ import com.example.application.backend.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,10 @@ public class NoteService {
         } else {
             return note.get();
         }
+    }
+
+    public List<Note> findAll() {
+        return noteRepository.findAll();
     }
 
     public Object createNote(Note note) {
