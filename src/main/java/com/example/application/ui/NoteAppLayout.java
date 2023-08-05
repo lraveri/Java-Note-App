@@ -12,6 +12,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import io.overcoded.vaadin.tinymce.TinyMceField;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Route("")
@@ -29,11 +30,15 @@ public class NoteAppLayout extends VerticalLayout {
     public NoteAppLayout(NoteService noteService) {
         this.noteService = noteService;
 
+        TinyMceField tinyMceField = new TinyMceField();
+        tinyMceField.setSizeFull();
+        tinyMceField.setWidthFull();
+
         configureFormLayout();
 
         configureGrid();
 
-        add(title, formLayout, grid);
+        add(title, formLayout, grid, tinyMceField);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
     }
 
