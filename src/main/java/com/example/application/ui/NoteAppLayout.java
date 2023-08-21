@@ -36,7 +36,7 @@ public class NoteAppLayout extends VerticalLayout {
 
         configureGrid();
 
-        add(title, formLayout, grid, tinyMce);
+        add(title, tinyMce, formLayout, grid);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
     }
 
