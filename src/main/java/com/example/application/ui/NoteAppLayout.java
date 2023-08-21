@@ -13,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.tinymce.TinyMce;
 
 @Route("")
 public class NoteAppLayout extends VerticalLayout {
@@ -29,11 +30,13 @@ public class NoteAppLayout extends VerticalLayout {
     public NoteAppLayout(NoteService noteService) {
         this.noteService = noteService;
 
+        TinyMce tinyMce = new TinyMce();
+
         configureFormLayout();
 
         configureGrid();
 
-        add(title, formLayout, grid);
+        add(title, formLayout, grid, tinyMce);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
     }
 
