@@ -183,7 +183,7 @@ public class MainView extends VerticalLayout {
                     tinyMce.setEditorContent(firstNote.getContent());
                 }
             } else {
-                tinyMce.setEditorContent("Welcome!");
+                tinyMce.setEditorContent("Welcome! Create a new note with the new button!");
             }
         }
     }
