@@ -122,8 +122,9 @@ public class MainView extends VerticalLayout {
 
         singleSelect.setDeselectAllowed(false);
         grid.setColumns("title");
-        grid.addColumn(new ComponentRenderer<>(this::createEditButton)).setHeader("");
-        grid.addComponentColumn(this::createDeleteButton).setHeader("");
+        grid.getColumns().forEach(col -> col.setSortable(false));
+        grid.addColumn(new ComponentRenderer<>(this::createEditButton)).setHeader("").setFlexGrow(0);
+        grid.addComponentColumn(this::createDeleteButton).setHeader("").setFlexGrow(0);
         grid.setWidth("30%");
         grid.setHeightFull();
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
@@ -198,7 +199,7 @@ public class MainView extends VerticalLayout {
         Dialog dialog = new Dialog("Edit Title");
 
         TextField titleField = new TextField("Title");
-        titleField.setValue(note.getTitle()); // Imposta il titolo corrente
+        titleField.setValue(note.getTitle());
 
         Button saveButton = new Button("Save", saveEvent -> {
             note.setTitle(titleField.getValue());
