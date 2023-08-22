@@ -2,6 +2,7 @@ package com.example.application.ui.view;
 
 import com.example.application.backend.model.entity.Note;
 import com.example.application.backend.service.NoteService;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -62,21 +63,7 @@ public class MainView extends VerticalLayout {
 
         configureGrid();
 
-        DataProvider<Note, ?> dataProvider2 = grid.getDataProvider();
-        if (dataProvider2 != null) {
-            List<Note> noteList = new ArrayList<>(dataProvider2.fetch(new Query<>()).collect(Collectors.toList()));
-            if (!noteList.isEmpty()) {
-                Note firstNote = noteList.get(0);
-                grid.select(firstNote);
-                if (firstNote.getContent() == null) {
-                    tinyMce.setEditorContent("");
-                } else {
-                    tinyMce.setEditorContent(firstNote.getContent());
-                }
-            } else {
-                tinyMce.setEditorContent("Welcome!");
-            }
-        }
+        selectFirstNote();
 
         Button newNoteButton = new Button("New", e -> {
             Note note = new Note();
@@ -136,8 +123,10 @@ public class MainView extends VerticalLayout {
         singleSelect.setDeselectAllowed(false);
         grid.setColumns("title");
         grid.addColumn(new ComponentRenderer<>(this::createEditButton)).setHeader("");
-        grid.setWidth("300px");
-        grid.setHeight("600px");
+        grid.addComponentColumn(this::createDeleteButton).setHeader("");
+        grid.setWidth("30%");
+        grid.setHeightFull();
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.addSelectionListener(e -> {
             Optional<Note> noteOpt = e.getFirstSelectedItem();
             if(noteOpt.isPresent()) {
@@ -150,6 +139,53 @@ public class MainView extends VerticalLayout {
             }
         });
 
+    }
+
+    private Button createDeleteButton(Note note) {
+        Button deleteButton = new Button(VaadinIcon.TRASH.create());
+        deleteButton.addClickListener(e -> showDeleteConfirmationPopup(note));
+        return deleteButton;
+    }
+
+    private void showDeleteConfirmationPopup(Note note) {
+        Dialog dialog = new Dialog("Confirm Deletion");
+
+        Text confirmationText = new Text("Are you sure you want to delete this note?");
+        Button confirmButton = new Button("Confirm", confirmEvent -> {
+            deleteNoteAndRefreshGrid(note);
+            dialog.close();
+        });
+        Button cancelButton = new Button("Cancel", cancelEvent -> dialog.close());
+
+        HorizontalLayout buttonLayout = new HorizontalLayout(confirmButton, cancelButton);
+
+        dialog.add(confirmationText, buttonLayout);
+        dialog.open();
+    }
+
+    private void deleteNoteAndRefreshGrid(Note note) {
+        noteService.deleteNote(note.getId());
+        grid.getDataProvider().refreshAll();
+        updateList();
+        selectFirstNote();
+    }
+
+    private void selectFirstNote() {
+        DataProvider<Note, ?> dataProvider2 = grid.getDataProvider();
+        if (dataProvider2 != null) {
+            List<Note> noteList = new ArrayList<>(dataProvider2.fetch(new Query<>()).collect(Collectors.toList()));
+            if (!noteList.isEmpty()) {
+                Note firstNote = noteList.get(0);
+                grid.select(firstNote);
+                if (firstNote.getContent() == null) {
+                    tinyMce.setEditorContent("");
+                } else {
+                    tinyMce.setEditorContent(firstNote.getContent());
+                }
+            } else {
+                tinyMce.setEditorContent("Welcome!");
+            }
+        }
     }
 
     private Button createEditButton(Note note) {
@@ -181,8 +217,8 @@ public class MainView extends VerticalLayout {
 
     private void configureTinyMce() {
         tinyMce.setEditorContent("<p>Hi <strong>Luca</strong>!<p>");
-        tinyMce.setHeight("600px");
-        tinyMce.setWidth("900px");
+        tinyMce.setHeightFull();
+        tinyMce.setWidthFull();
     }
 
     private void updateList() {
