@@ -30,11 +30,8 @@ import java.util.stream.Collectors;
 public class MainView extends VerticalLayout {
 
     private NoteService noteService;
-
     private Grid<Note> grid = new Grid<>(Note.class);
-
     private H1 title = new H1("Java Note App");
-
     private TinyMce tinyMce = new TinyMce();
 
     @Autowired
@@ -55,17 +52,44 @@ public class MainView extends VerticalLayout {
 
         HorizontalLayout titleLayout = new HorizontalLayout();
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.setWidthFull();
-        horizontalLayout.setHeightFull();
+        HorizontalLayout bodyLayout = new HorizontalLayout();
+        bodyLayout.setWidthFull();
+        bodyLayout.setHeightFull();
 
         configureTinyMce();
-
         configureGrid();
 
         selectFirstNote();
 
-        Button newNoteButton = new Button("New", e -> {
+        Button newNoteButton = createNewNoteButton(noteService);
+        Button saveButton = createSaveButton(noteService, dataProvider);
+
+        titleLayout.add(title);
+        titleLayout.addAndExpand(new Div());
+        titleLayout.add(saveButton, newNoteButton);
+
+        bodyLayout.add(grid, tinyMce);
+
+        add(titleLayout, bodyLayout);
+    }
+
+    private Button createSaveButton(NoteService noteService, DataProvider<Note, Void> dataProvider) {
+        return new Button("Save", e -> {
+            Optional<Note> selectedNoteOpt = grid.getSelectionModel().getFirstSelectedItem();
+            if (selectedNoteOpt.isPresent()) {
+                Note selectedNote = selectedNoteOpt.get();
+                selectedNote.setContent(tinyMce.getCurrentValue());
+                noteService.updateNote(selectedNote);
+
+                dataProvider.refreshItem(selectedNote);
+                updateList();
+                grid.select(selectedNote);
+            }
+        });
+    }
+
+    private Button createNewNoteButton(NoteService noteService) {
+        return new Button("New", e -> {
             Note note = new Note();
 
             Dialog dialog = new Dialog("Insert title");
@@ -87,30 +111,6 @@ public class MainView extends VerticalLayout {
 
             dialog.open();
         });
-
-        Button saveButton = new Button("Save", e -> {
-            Optional<Note> selectedNoteOpt = grid.getSelectionModel().getFirstSelectedItem();
-            if (selectedNoteOpt.isPresent()) {
-                Note selectedNote = selectedNoteOpt.get();
-                selectedNote.setContent(tinyMce.getCurrentValue());
-                noteService.updateNote(selectedNote);
-
-                dataProvider.refreshItem(selectedNote);
-                updateList();
-                grid.select(selectedNote);
-            }
-        });
-
-        titleLayout.add(title);
-
-        Div div = new Div();
-        titleLayout.addAndExpand(div);
-        titleLayout.add(saveButton, newNoteButton);
-
-        horizontalLayout.add(grid, tinyMce);
-
-        add(titleLayout, horizontalLayout);
-
     }
 
     private void configureGrid() {
@@ -217,7 +217,6 @@ public class MainView extends VerticalLayout {
     }
 
     private void configureTinyMce() {
-        tinyMce.setEditorContent("<p>Hi <strong>Luca</strong>!<p>");
         tinyMce.setHeightFull();
         tinyMce.setWidthFull();
     }
