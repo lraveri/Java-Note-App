@@ -32,10 +32,18 @@ public class NoteService {
         return noteRepository.save(note);
     }
 
-    public Object updateNote(Long id, Note request) {
-        Optional<Note> note = noteRepository.findById(id);
+    public Object save(Note note) {
+        return noteRepository.save(note);
+    }
+
+    public int count() {
+        return (int) noteRepository.count();
+    }
+
+    public Object updateNote(Note request) {
+        Optional<Note> note = noteRepository.findById(request.getId());
         if(note.isEmpty()) {
-            throw new NoteNotFoundException(id);
+            throw new NoteNotFoundException(request.getId());
         } else {
             Note.update(note.get(), request);
             noteRepository.save(note.get());

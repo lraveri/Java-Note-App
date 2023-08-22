@@ -25,8 +25,8 @@ public class NoteController {
     }
 
     @PutMapping(value = "/note/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> updateNote(@PathVariable Long id, @RequestBody Note note) {
-        return new ResponseEntity<>(noteService.updateNote(id, note), HttpStatus.OK);
+    public ResponseEntity<Object> updateNote(@RequestBody Note note) {
+        return new ResponseEntity<>(noteService.updateNote(note), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/note/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
