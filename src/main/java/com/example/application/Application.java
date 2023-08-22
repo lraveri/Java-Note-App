@@ -4,6 +4,7 @@ import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 
 /**
  * The entry point of the Spring Boot application.
@@ -12,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * and some desktop browsers.
  *
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class)
 @Theme(value = "noteapp")
 public class Application implements AppShellConfigurator {
 
