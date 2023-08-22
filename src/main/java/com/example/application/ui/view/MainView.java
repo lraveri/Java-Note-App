@@ -6,6 +6,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSingleSelectionModel;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -39,6 +40,9 @@ public class MainView extends VerticalLayout {
     public MainView(NoteService noteService) {
         this.noteService = noteService;
 
+        this.setWidthFull();
+        this.setHeightFull();
+
         DataProvider<Note, Void> dataProvider = DataProvider.fromCallbacks(
                 query -> noteService.findAll().stream(),
                 query -> noteService.count()
@@ -48,11 +52,11 @@ public class MainView extends VerticalLayout {
 
         updateList();
 
-        HorizontalLayout horizontalLayoutTitle = new HorizontalLayout();
-
-        configureTitle();
+        HorizontalLayout titleLayout = new HorizontalLayout();
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setWidthFull();
+        horizontalLayout.setHeightFull();
 
         configureTinyMce();
 
@@ -104,18 +108,21 @@ public class MainView extends VerticalLayout {
                 selectedNote.setContent(tinyMce.getCurrentValue());
                 noteService.updateNote(selectedNote);
 
-                // Aggiorna il DataProvider per riflettere i cambiamenti
                 dataProvider.refreshItem(selectedNote);
                 updateList();
                 grid.select(selectedNote);
             }
         });
 
-        horizontalLayoutTitle.add(title, saveButton, newNoteButton);
+        titleLayout.add(title);
+
+        Div div = new Div();
+        titleLayout.addAndExpand(div);
+        titleLayout.add(saveButton, newNoteButton);
 
         horizontalLayout.add(grid, tinyMce);
 
-        add(horizontalLayoutTitle, horizontalLayout);
+        add(titleLayout, horizontalLayout);
 
     }
 
@@ -176,10 +183,6 @@ public class MainView extends VerticalLayout {
         tinyMce.setEditorContent("<p>Hi <strong>Luca</strong>!<p>");
         tinyMce.setHeight("600px");
         tinyMce.setWidth("900px");
-    }
-
-    private void configureTitle() {
-        title.setWidth("1000px");
     }
 
     private void updateList() {
