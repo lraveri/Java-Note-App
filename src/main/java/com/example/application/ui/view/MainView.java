@@ -2,6 +2,7 @@ package com.example.application.ui.view;
 
 import com.example.application.backend.model.entity.Note;
 import com.example.application.backend.service.NoteService;
+import com.example.application.security.SecurityService;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -17,8 +18,10 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.vaadin.tinymce.TinyMce;
 
 import java.util.ArrayList;
@@ -32,13 +35,17 @@ import java.util.stream.Collectors;
 public class MainView extends VerticalLayout {
 
     private NoteService noteService;
+
+    private final transient AuthenticationContext authContext;
+
     private Grid<Note> grid = new Grid<>(Note.class);
     private H1 title = new H1("Java Note App");
     private TinyMce tinyMce = new TinyMce();
 
     @Autowired
-    public MainView(NoteService noteService) {
+    public MainView(NoteService noteService, @Autowired SecurityService securityService, AuthenticationContext authContext) {
         this.noteService = noteService;
+        this.authContext = authContext;
 
         this.setWidthFull();
         this.setHeightFull();
@@ -52,6 +59,12 @@ public class MainView extends VerticalLayout {
 
         updateList();
 
+        HorizontalLayout userLayout = new HorizontalLayout();
+        userLayout.setWidthFull();
+        userLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+
+        Text userText = new Text("Hi, " + authContext.getAuthenticatedUser(UserDetails.class).get().getUsername());
+
         HorizontalLayout titleLayout = new HorizontalLayout();
 
         HorizontalLayout bodyLayout = new HorizontalLayout();
@@ -63,8 +76,13 @@ public class MainView extends VerticalLayout {
 
         selectFirstNote();
 
+        Button logoutButton = new Button("Logout", click ->
+                securityService.logout());
+
         Button newNoteButton = createNewNoteButton(noteService);
         Button saveButton = createSaveButton(noteService, dataProvider);
+
+        userLayout.add(userText, logoutButton);
 
         titleLayout.add(title);
         titleLayout.addAndExpand(new Div());
@@ -72,7 +90,7 @@ public class MainView extends VerticalLayout {
 
         bodyLayout.add(grid, tinyMce);
 
-        add(titleLayout, bodyLayout);
+        add(userLayout, titleLayout, bodyLayout);
     }
 
     private Button createSaveButton(NoteService noteService, DataProvider<Note, Void> dataProvider) {
