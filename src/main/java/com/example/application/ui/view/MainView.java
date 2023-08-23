@@ -17,6 +17,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.spring.security.AuthenticationContext;
@@ -32,6 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @PermitAll
+@PageTitle("Note")
 @Route("")
 public class MainView extends VerticalLayout {
 
@@ -40,7 +42,6 @@ public class MainView extends VerticalLayout {
     private final transient AuthenticationContext authContext;
 
     private Grid<Note> grid = new Grid<>(Note.class);
-    private H1 title = new H1("Java Note App");
     private TinyMce tinyMce = new TinyMce();
 
     @Autowired
@@ -59,10 +60,6 @@ public class MainView extends VerticalLayout {
         grid.setDataProvider(dataProvider);
 
         updateList();
-
-        HorizontalLayout userLayout = new HorizontalLayout();
-        userLayout.setWidthFull();
-        userLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
 
         Text userText = new Text("Hi, " + authContext.getAuthenticatedUser(UserDetails.class).get().getUsername());
 
@@ -83,15 +80,14 @@ public class MainView extends VerticalLayout {
         Button newNoteButton = createNewNoteButton(noteService);
         Button saveButton = createSaveButton(noteService, dataProvider);
 
-        userLayout.add(userText, logoutButton);
-
-        titleLayout.add(title);
+        titleLayout.add(userText, logoutButton);
         titleLayout.addAndExpand(new Div());
         titleLayout.add(saveButton, newNoteButton);
 
+        titleLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
         bodyLayout.add(grid, tinyMce);
 
-        add(userLayout, titleLayout, bodyLayout);
+        add(titleLayout, bodyLayout);
     }
 
     private Button createSaveButton(NoteService noteService, DataProvider<Note, Void> dataProvider) {
