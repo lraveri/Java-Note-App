@@ -29,7 +29,7 @@ public class SecurityConfig extends VaadinWebSecurity {
     @Bean
     public UserDetailsService users() {
         UserDetails user = User.builder()
-                .username("Jhon")
+                .username("John")
                 .password("{bcrypt}$2a$10$u6raNOYPsRWTIHU0IEe40OgcOo3geBfvziuaSXCN/3C/Os3xnv8O2")
                 .roles("USER")
                 .build();
