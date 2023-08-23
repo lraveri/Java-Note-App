@@ -28,11 +28,11 @@ public class SecurityConfig extends VaadinWebSecurity {
 
     @Bean
     public UserDetailsService users() {
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
-//                .roles("USER")
-//                .build();
+        UserDetails user = User.builder()
+                .username("Jhon")
+                .password("{bcrypt}$2a$10$u6raNOYPsRWTIHU0IEe40OgcOo3geBfvziuaSXCN/3C/Os3xnv8O2")
+                .roles("USER")
+                .build();
 //        UserDetails admin = User.builder()
 //                .username("admin")
 //                .password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
@@ -41,8 +41,8 @@ public class SecurityConfig extends VaadinWebSecurity {
         UserDetails luca = User.builder()
                 .username("Luca")
                 .password("{bcrypt}$2a$10$G9z2cGjH4Fl6IyTuUK4lROLh2dE.m9e6LIgipv4UDVc778w2VUYFS")
-                .roles("USER")
+                .roles("USER", "ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(luca);
+        return new InMemoryUserDetailsManager(user, luca);
     }
 }
