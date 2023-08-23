@@ -27,6 +27,10 @@ public class User {
 
     private Role role;
 
+    private String activationCode;
+
+    private boolean active;
+
     public User() {
 
     }
@@ -40,6 +44,10 @@ public class User {
 
     public boolean checkPassword(String password) {
         return DigestUtils.sha1Hex(password + passwordSalt).equals(passwordHash);
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
 }
