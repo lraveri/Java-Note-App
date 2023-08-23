@@ -59,4 +59,8 @@ public class NoteService {
             noteRepository.delete(note.get());
         }
     }
+
+    public List<Note> findAllByCreatedBy(String username) {
+        return noteRepository.findAllByCreatedBy(username);
+    }
 }

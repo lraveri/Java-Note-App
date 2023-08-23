@@ -44,6 +44,8 @@ public class MainView extends VerticalLayout {
     private Grid<Note> grid = new Grid<>(Note.class);
     private TinyMce tinyMce = new TinyMce();
 
+    private String username;
+
     @Autowired
     public MainView(NoteService noteService, @Autowired SecurityService securityService, AuthenticationContext authContext) {
         this.noteService = noteService;
@@ -52,8 +54,10 @@ public class MainView extends VerticalLayout {
         this.setWidthFull();
         this.setHeightFull();
 
+        username = authContext.getAuthenticatedUser(UserDetails.class).get().getUsername();
+
         DataProvider<Note, Void> dataProvider = DataProvider.fromCallbacks(
-                query -> noteService.findAll().stream(),
+                query -> noteService.findAllByCreatedBy(username).stream(),
                 query -> noteService.count()
         );
 
@@ -61,7 +65,7 @@ public class MainView extends VerticalLayout {
 
         updateList();
 
-        Text userText = new Text("Hi, " + authContext.getAuthenticatedUser(UserDetails.class).get().getUsername());
+        Text userText = new Text("Hi, " + username);
 
         HorizontalLayout titleLayout = new HorizontalLayout();
 
@@ -114,6 +118,7 @@ public class MainView extends VerticalLayout {
             TextField titleField = new TextField("Title");
             Button button = new Button("Save", saveEvent -> {
                 note.setTitle(titleField.getValue());
+                note.setCreatedBy(username);
                 dialog.close();
                 noteService.createNote(note);
                 grid.getDataProvider().refreshItem(note);
@@ -239,7 +244,7 @@ public class MainView extends VerticalLayout {
     }
 
     private void updateList() {
-        List<Note> notes = noteService.findAll();
+        List<Note> notes = noteService.findAllByCreatedBy(username);
 
         notes.sort(Comparator.comparingLong(Note::getId).reversed());
 
