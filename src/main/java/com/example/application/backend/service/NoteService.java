@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service
 public class NoteService {
 
-    @Autowired
-    NoteRepository noteRepository;
+    private final NoteRepository noteRepository;
+
+    public NoteService(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
+    }
 
     public Note findById(Long id) {
         Optional<Note> note = noteRepository.findById(id);
