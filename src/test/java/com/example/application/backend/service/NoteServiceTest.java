@@ -17,7 +17,7 @@ import static org.mockito.BDDMockito.given;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-public class NoteServiceTest {
+class NoteServiceTest {
 
     @Mock
     private NoteRepository noteRepository;
@@ -37,7 +37,7 @@ public class NoteServiceTest {
 
     // BDD style test
     @Test
-    void givenANote_whenFindById_thenReturnNote() {
+    void givenNoteObject_whenFindById_thenReturnNote() {
         // given (precondition)
 
         given(noteRepository.findById(1L)).willReturn(Optional.of(note));
