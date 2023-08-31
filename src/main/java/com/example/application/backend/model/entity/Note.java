@@ -5,7 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,34 +23,34 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class Note {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
-  private String title;
+    private String title;
 
-  private String content;
+    private String content;
 
-  private Long isPinned;
+    private Long isPinned;
 
-  private String tags;
+    private String tags;
 
-  private Long idParent;
+    private Long idParent;
 
-  private LocalDateTime createdWhen;
+    private LocalDateTime createdWhen;
 
-  private LocalDateTime lastUpdatedWhen;
+    private LocalDateTime lastUpdatedWhen;
 
-  private String createdBy;
+    private String createdBy;
 
-  public static void update(Note original, Note update) {
-    original.setContent(update.getContent());
-    original.setCreatedBy(update.getCreatedBy());
-    original.setCreatedWhen(update.getCreatedWhen());
-    original.setTags(update.getTags());
-    original.setTitle(update.getTitle());
-    original.setIdParent(update.getIdParent());
-    original.setIsPinned(update.getIsPinned());
-    original.setLastUpdatedWhen(update.getLastUpdatedWhen());
-  }
+    public static void update(Note original, Note update) {
+        original.setContent(update.getContent());
+        original.setCreatedBy(update.getCreatedBy());
+        original.setCreatedWhen(update.getCreatedWhen());
+        original.setTags(update.getTags());
+        original.setTitle(update.getTitle());
+        original.setIdParent(update.getIdParent());
+        original.setIsPinned(update.getIsPinned());
+        original.setLastUpdatedWhen(update.getLastUpdatedWhen());
+    }
 }

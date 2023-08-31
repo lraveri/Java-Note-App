@@ -152,9 +152,9 @@ public class MainView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.addSelectionListener(e -> {
             Optional<Note> noteOpt = e.getFirstSelectedItem();
-            if(noteOpt.isPresent()) {
+            if (noteOpt.isPresent()) {
                 Note note = noteOpt.get();
-                if(note.getContent() == null) {
+                if (note.getContent() == null) {
                     tinyMce.setEditorContent("");
                 } else {
                     tinyMce.setEditorContent(note.getContent());

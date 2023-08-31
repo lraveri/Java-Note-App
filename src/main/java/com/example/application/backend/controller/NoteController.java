@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 public class NoteController {
 
-  private final NoteService noteService;
+    private final NoteService noteService;
 
-  @GetMapping("{id}")
-  public ResponseEntity<Note> findNote(@PathVariable Long id) {
-    return ResponseEntity.ok(noteService.findById(id));
-  }
+    @GetMapping("{id}")
+    public ResponseEntity<Note> findNote(@PathVariable Long id) {
+        return ResponseEntity.ok(noteService.findById(id));
+    }
 
-  @PostMapping
-  public ResponseEntity<Note> createNote(@RequestBody Note note) {
-    return ResponseEntity.ok(noteService.createNote(note));
-  }
+    @PostMapping
+    public ResponseEntity<Note> createNote(@RequestBody Note note) {
+        return ResponseEntity.ok(noteService.createNote(note));
+    }
 
-  @PutMapping("{id}")
-  public ResponseEntity<Note> updateNote(@RequestBody Note note) {
-    return ResponseEntity.ok(noteService.updateNote(note));
-  }
+    @PutMapping("{id}")
+    public ResponseEntity<Note> updateNote(@RequestBody Note note) {
+        return ResponseEntity.ok(noteService.updateNote(note));
+    }
 
-  @DeleteMapping("{id}")
-  public ResponseEntity<Note> deleteNote(@PathVariable Long id) {
-    noteService.deleteNote(id);
-    return ResponseEntity.noContent().build();
-  }
+    @DeleteMapping("{id}")
+    public ResponseEntity<Note> deleteNote(@PathVariable Long id) {
+        noteService.deleteNote(id);
+        return ResponseEntity.noContent().build();
+    }
 }
