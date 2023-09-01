@@ -74,20 +74,24 @@ public class CustomNoteJpaRepositoryImpl implements CustomNoteJpaRepository {
     }
   }
 
-  @Override
-  public Note findByIdMandatoryAlternative(Long noteId) {
-
-    String theJpqlQuery = "select n from Note n where n.id = :noteId";
-
-    var typedQuery =
-        entityManager.createQuery(theJpqlQuery, Note.class).setParameter(QRY_PARAM_NOTE_ID, noteId);
-
-    try {
-      return typedQuery.getSingleResult();
-
-    } catch (NoResultException ex) {
-      throw new NoteNotFoundException(noteId);
-      // Launching your custom exception if no results are found
-    }
-  }
+  /***
+   * This is the same method, but it's using JPQL instead of the Criteria api
+   */
+  //  @Override
+  //  public Note findByIdMandatory(Long noteId) {
+  //
+  //    String theJpqlQuery = "select n from Note n where n.id = :noteId";
+  //
+  //    var typedQuery =
+  //        entityManager.createQuery(theJpqlQuery, Note.class).setParameter(QRY_PARAM_NOTE_ID,
+  // noteId);
+  //
+  //    try {
+  //      return typedQuery.getSingleResult();
+  //
+  //    } catch (NoResultException ex) {
+  //      throw new NoteNotFoundException(noteId);
+  //      // Launching your custom exception if no results are found
+  //    }
+  //  }
 }

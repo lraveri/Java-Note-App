@@ -12,18 +12,12 @@ import java.util.Optional;
  * <p>
  * This interface will be implemented by CustomNoteJpaRepositoryImpl, so we'll be able
  * to define custom queries with greater control.
- * Either in JPQL, or by directly manipulating the EntityManager 
- * 
+ * Either in JPQL, or by directly manipulating the EntityManager
+ *
  */
 public interface CustomNoteJpaRepository {
 
   Optional<Note> findNoteByTitle(String title);
 
-  /***
-   * There is no need to use both of the following methods.
-   * Just pick the one with the implementation you like the most
-   */
   Note findByIdMandatory(Long id);
-  Note findByIdMandatoryAlternative(Long noteId);
-    
 }
