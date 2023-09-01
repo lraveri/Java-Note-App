@@ -1,10 +1,7 @@
 package com.example.application.backend.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -21,10 +18,11 @@ import lombok.extern.jackson.Jacksonized;
 @AllArgsConstructor
 @Builder
 @Jacksonized
+@Table(name = "NOTE")
 public class Note {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -35,22 +33,23 @@ public class Note {
 
     private String tags;
 
+    @Column(name = "ID_PARENT")
     private Long idParent;
 
-    private LocalDateTime createdWhen;
-
-    private LocalDateTime lastUpdatedWhen;
+//    private LocalDateTime createdWhen;
+//
+//    private LocalDateTime lastUpdatedWhen;
 
     private String createdBy;
 
     public static void update(Note original, Note update) {
         original.setContent(update.getContent());
         original.setCreatedBy(update.getCreatedBy());
-        original.setCreatedWhen(update.getCreatedWhen());
+//        original.setCreatedWhen(update.getCreatedWhen());
         original.setTags(update.getTags());
         original.setTitle(update.getTitle());
         original.setIdParent(update.getIdParent());
         original.setIsPinned(update.getIsPinned());
-        original.setLastUpdatedWhen(update.getLastUpdatedWhen());
+//        original.setLastUpdatedWhen(update.getLastUpdatedWhen());
     }
 }
