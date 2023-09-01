@@ -29,27 +29,11 @@ public class Note {
 
     private String content;
 
-    private Long isPinned;
-
-    private String tags;
-
-    @Column(name = "ID_PARENT")
-    private Long idParent;
-
-//    private LocalDateTime createdWhen;
-//
-//    private LocalDateTime lastUpdatedWhen;
-
     private String createdBy;
 
     public static void update(Note original, Note update) {
         original.setContent(update.getContent());
         original.setCreatedBy(update.getCreatedBy());
-//        original.setCreatedWhen(update.getCreatedWhen());
-        original.setTags(update.getTags());
         original.setTitle(update.getTitle());
-        original.setIdParent(update.getIdParent());
-        original.setIsPinned(update.getIsPinned());
-//        original.setLastUpdatedWhen(update.getLastUpdatedWhen());
     }
 }
