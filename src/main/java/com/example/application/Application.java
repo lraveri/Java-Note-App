@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
  * and some desktop browsers.
  */
 @SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class)
-@Theme(value = "noteapp")
+@Theme(value = "myapp")
 @PWA(name = "Java Note App", shortName = "Note")
 public class Application implements AppShellConfigurator {
 

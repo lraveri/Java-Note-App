@@ -1,0 +1,16 @@
+@import url('./main-layout.css');
+@import url('./views/image-list-view.css');    html {
+      --lumo-primary-color: hsl(214, 0%, 0%);
+      --lumo-primary-color-50pct: hsla(214, 0%, 0%, 0.5);
+      --lumo-primary-color-10pct: hsla(214, 0%, 0%, 0.1);
+      --lumo-base-color: #fcfcfc;
+      --lumo-error-color: hsl(3, 51%, 39%);
+      --lumo-error-color-50pct: hsla(3, 51%, 39%, 0.5);
+      --lumo-error-color-10pct: hsla(3, 51%, 39%, 0.1);
+      --lumo-success-color: hsl(145, 66%, 62%);
+      --lumo-success-color-50pct: hsla(145, 66%, 62%, 0.5);
+      --lumo-success-color-10pct: hsla(145, 66%, 62%, 0.1);
+      --lumo-primary-text-color: hsl(200, 100%, 29%);
+      --lumo-body-text-color: hsla(333, 0%, 0%, 0.94);
+
+    }

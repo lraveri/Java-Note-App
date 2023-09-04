@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 
 @PermitAll
 @PageTitle("Note")
-@Route("")
 public class MainView extends VerticalLayout {
 
     private NoteService noteService;
